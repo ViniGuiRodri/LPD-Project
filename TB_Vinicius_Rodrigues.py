@@ -58,6 +58,15 @@ def syn_flood(ip_alvo):
 ## Based on "How to Make a SYN Flooding Attack in Python" / "Abdeladim Fadheli" Article - https://thepythoncode.com/article/syn-flooding-attack-using-scapy-in-python <---
 
 
+def port_knocking():
+    target_ip = input("Digite o endereço IP do servidor alvo: ")
+    knocking_ports = [int(port) for port in input("Digite as portas para o port knocking (separadas por espaço): ").split()]
+    for port in knocking_ports:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.sendto(b'', (target_ip, port))
+            time.sleep(1)
+
+
 def Menu_do_Programa():
     os.system('clear')
     print("\nLinguagens de Programação Dinâmicas")
@@ -100,8 +109,14 @@ def main():
             print("Você escolheu a Opção 5")
             input("Pressione Enter para continuar...")
         elif escolha == "6":
-            print("Você escolheu a Opção 6")
+            print("6- Port Knocking")
+            print("Para configurar um servidor, primeiro utilize seguinte script: \n\n* filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT ACCEPT [0:0]\n:TRAFFIC - [0:0]\n:SSH-INPUT - [0:0]\n:SSH-INPUTTWO - [0:0]\n# TRAFFIC chain for Port Knocking. The correct port sequence in this example is 8881 -> 7777 -> 9991; any other sequence will drop the traffic\n-A INPUT -j TRAFFIC\n-A TRAFFIC -p icmp --icmp-type any -j ACCEPT\n-A TRAFFIC -m state --state ESTABLISHED, RELATED -j ACCEPT\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 22 -m recent --rcheck --seconds 30 --name SSH2 -j ACCEPT\n-A TRAFFIC -m state --state NEW -m tcp -p tcp -m recent --name SSH2 --remove -j DROP\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 9991 -m recent --rcheck --name SSH1 -j SSH-INPUTTWO\n-A TRAFFIC -m state --state NEW -m tcp -p tcp -m recent --name SSH1 --remove -j DROP\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 7777 -m recent --rcheck --name SSHO -j SSH-INPUT\n-A TRAFFIC -m state --state NEW -m tcp -p tcp -m recent --name SSHO --remove -j DROP\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 8881 -m recent --name SSHO --set -j DROP\n-A SSH-INPUT -m recent --name SSH1 --set -j DROP\n-A SSH-INPUTTWO -m recent --name SSH2 --set -j DROP\n-A TRAFFIC -j DROP\nCOMMIT\n# END or further rules")
             input("Pressione Enter para continuar...")
+            os.system('clear')
+            port_knocking()
+            input("Pressione Enter para continuar...")
+            os.system('clear')
+
         elif escolha == "7":
             print("Você escolheu a Opção 7")
             input("Pressione Enter para continuar...")
