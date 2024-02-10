@@ -3,8 +3,17 @@ import socket
 import ipaddress
 import random
 import time
-#  from scapy.all import *
+import string
+import subprocess
+# from scapy.all import *
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
+
+# Parte das funções abaixo foram adaptadas dos exemplos demonstrados em aula no IPBeja pelo Professor Armando Ventura no módulo de Linguagens de Programação Dinâmicas. 
 
 def varredura_de_portas(faixa_ips_alvo, porta_inicial, porta_final):
     faixa_ip = ipaddress.IPv4Network(faixa_ips_alvo, strict=False)
@@ -47,7 +56,7 @@ def flood_udp(ip_alvo):
         # ------------->   Caso queira limitar o número de Pacotes   <--------------
 
 
-## Based on "How to Make a SYN Flooding Attack in Python" / "Abdeladim Fadheli" Article - https://thepythoncode.com/article/syn-flooding-attack-using-scapy-in-python --->
+# Based on "How to Make a SYN Flooding Attack in Python" / "Abdeladim Fadheli" Article - https://thepythoncode.com/article/syn-flooding-attack-using-scapy-in-python --->
 def syn_flood(ip_alvo):
     porta_alvo = int(input("Digite a porta alvo: "))
     ip = IP(dst=ip_alvo)
@@ -55,7 +64,64 @@ def syn_flood(ip_alvo):
     raw = Raw(b"X"*1024)
     p = ip / tcp / raw
     send(p, loop=1, verbose=0)
-## Based on "How to Make a SYN Flooding Attack in Python" / "Abdeladim Fadheli" Article - https://thepythoncode.com/article/syn-flooding-attack-using-scapy-in-python <---
+# Based on "How to Make a SYN Flooding Attack in Python" / "Abdeladim Fadheli" Article - https://thepythoncode.com/article/syn-flooding-attack-using-scapy-in-python <---
+ 
+
+# Conjunto de Funções para a Troca de Mensagens Servidor/Cliente --->
+def generate_key_from_password(password, salt):
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000,
+        backend=default_backend()
+    )
+    key = kdf.derive(password.encode())  # Deriva uma chave a partir da senha
+    return key
+
+def encrypt_message(key, message, salt):
+    cipher = AES.new(key, AES.MODE_CBC)
+    ct_bytes = cipher.encrypt(pad(message, AES.block_size))
+    return salt + cipher.iv + ct_bytes  
+
+def decrypt_message(password, encrypted_message):
+    salt = encrypted_message[:16]
+    iv = encrypted_message[16:32]
+    ct = encrypted_message[32:]
+    key = generate_key_from_password(password, salt)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    pt = unpad(cipher.decrypt(ct), AES.block_size)
+    return pt
+
+def server_side(port, password):
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind(('127.0.0.1', port))
+        s.listen()
+        conn, addr = s.accept()
+        conn.send("Thank you for connecting".encode())
+        dataFromClient = conn.recv(4096)
+        decrypted_data = decrypt_message(password, dataFromClient)
+        print(decrypted_data.decode())
+        conn.close()
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+def client_side(ip, port, password):
+    try:
+        salt = os.urandom(16)  # Gera um salt único para esta sessão
+        key = generate_key_from_password(password, salt)
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((ip, port))
+        dataFromServer = s.recv(1024)
+        print(dataFromServer.decode())
+        dataToServer = "Hello Server From Client"
+        encrypted_data = encrypt_message(key, dataToServer.encode(), salt)
+        s.send(encrypted_data)
+        s.close()
+    except Exception as e:
+        print(f"An error occurred: {e}")
+# Conjunto de Funções para a Troca de Mensagens Servidor/Cliente <---
 
 
 def port_knocking():
@@ -64,6 +130,7 @@ def port_knocking():
     for port in knocking_ports:
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
             s.sendto(b'', (target_ip, port))
+            # Define o tempo de comunicação entre as portas
             time.sleep(1)
 
 
@@ -104,10 +171,24 @@ def main():
             input("Pressione Enter para continuar...")
         elif escolha == "4":
             print("Você escolheu a Opção 4")
+            nome_arquivo = input("Digite o nome do arquivo de log: ")
+            contar_ocorrencias_ips(nome_arquivo)
             input("Pressione Enter para continuar...")
         elif escolha == "5":
             print("Você escolheu a Opção 5")
-            input("Pressione Enter para continuar...")
+            escolha_server_client = input("Digite 1 para servidor ou 2 para cliente: ")
+            if escolha_server_client == '1':
+                port = int(input("Digite a porta do servidor: "))
+                password = input("Digite a senha para criptografia: ")
+                server_side(port, password)
+            elif escolha_server_client == '2':
+                ip = input("Digite o IP do servidor: ")
+                port = int(input("Digite a porta do servidor: "))
+                password = input("Digite a senha para criptografia: ")
+                client_side(ip, port, password)
+            else:
+                print("Opção inválida.")
+                input("Pressione Enter para continuar...")
         elif escolha == "6":
             print("6- Port Knocking")
             print("Para configurar um servidor, primeiro utilize seguinte script: \n\n* filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT ACCEPT [0:0]\n:TRAFFIC - [0:0]\n:SSH-INPUT - [0:0]\n:SSH-INPUTTWO - [0:0]\n# TRAFFIC chain for Port Knocking. The correct port sequence in this example is 8881 -> 7777 -> 9991; any other sequence will drop the traffic\n-A INPUT -j TRAFFIC\n-A TRAFFIC -p icmp --icmp-type any -j ACCEPT\n-A TRAFFIC -m state --state ESTABLISHED, RELATED -j ACCEPT\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 22 -m recent --rcheck --seconds 30 --name SSH2 -j ACCEPT\n-A TRAFFIC -m state --state NEW -m tcp -p tcp -m recent --name SSH2 --remove -j DROP\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 9991 -m recent --rcheck --name SSH1 -j SSH-INPUTTWO\n-A TRAFFIC -m state --state NEW -m tcp -p tcp -m recent --name SSH1 --remove -j DROP\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 7777 -m recent --rcheck --name SSHO -j SSH-INPUT\n-A TRAFFIC -m state --state NEW -m tcp -p tcp -m recent --name SSHO --remove -j DROP\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 8881 -m recent --name SSHO --set -j DROP\n-A SSH-INPUT -m recent --name SSH1 --set -j DROP\n-A SSH-INPUTTWO -m recent --name SSH2 --set -j DROP\n-A TRAFFIC -j DROP\nCOMMIT\n# END or further rules")
