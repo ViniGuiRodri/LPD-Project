@@ -9,6 +9,7 @@ import socket  # Usado em todas as funções de rede para criar conexões TCP/UD
 import ipaddress  # Gerar e manipular faixas de endereços IP na varredura de portas
 import random  # Gerar números aleatórios, como portas em flood_udp e bytes aleatórios
 import time  # Introduzir atrasos, por exemplo, no port knocking
+import subprocess # Usado para chamar o script externo 
 from scapy.all import *  # Usado na função syn_flood para criação e envio de pacotes de rede personalizados
 from Crypto.Cipher import AES  # Encriptação e decriptação AES nas funções de troca de mensagens
 from Crypto.Util.Padding import pad, unpad  # Adicionar e remover padding em blocos AES
@@ -139,16 +140,84 @@ def port_knocking():
             time.sleep(1) # Espera 1 segundo entre cada envio
 
 
+def troca_de_mensagens():
+    public_key, private_key = rsa.newkeys(1024)
+    public_partner = None
+
+    choice = input("Digite 1 para Servidor e 2 para Cliente: ")
+
+    if choice == "1":
+        ip = input("Digite o IP para o servidor ou deixe em branco para usar 'localhost': ") or "localhost"
+        porta = input("Digite a porta para o servidor: ")
+        try:
+            porta = int(porta)
+        except ValueError:
+            print("Porta inválida. Por favor, insira um número.")
+            exit()
+
+        server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        server.bind((ip, porta))
+        server.listen()
+
+        print(f"Servidor iniciado em {ip}:{porta}. Aguardando conexões...")
+        client, _ = server.accept()
+        client.send(public_key.save_pkcs1("PEM"))
+        public_partner = rsa.PublicKey.load_pkcs1(client.recv(1024))
+
+    elif choice == "2":
+        ip = input("Digite o IP para se conectar: ")
+        porta = input("Digite a porta para se conectar: ")
+        try:
+            porta = int(porta)
+        except ValueError:
+            print("Porta inválida. Por favor, insira um número.")
+            exit()
+
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            client.connect((ip, porta))
+        except Exception as e:
+            print(f"Não foi possível conectar ao servidor {ip}:{porta}. Erro: {e}")
+            exit()
+
+        public_partner = rsa.PublicKey.load_pkcs1(client.recv(1024))
+        client.send(public_key.save_pkcs1("PEM"))
+
+    else:
+        print("Opção inválida.")
+        exit()
+
+    def sending_messages(c):
+        while True:
+            message = input("")
+            c.send(rsa.encrypt(message.encode(), public_partner))
+            print("Você: " + message)
+            
+    def receiving_messages(c):
+        while True:
+            try:
+                print("Parceiro: " + rsa.decrypt(c.recv(1024), private_key).decode())
+            except Exception as e:
+                print("Erro ao receber a mensagem: ", e)
+                break
+
+    threading.Thread(target=sending_messages, args=(client,)).start()
+    threading.Thread(target=receiving_messages, args=(client,)).start()
+
+
+
+
+
 def Menu_do_Programa():
     os.system('clear')
     print("\nLPD-Project | Linguagens de Programação Dinâmicas\n")
     print("1- Port Scan")
     print("2- UDP Flood")
     print("3- SYN Flood")
-    # print("(Em Desenvolvimento) 4- Análise e Processamento de Ficheiros de Log")
+    print("4- Troca de Mensagens (Versão Alternativa Externa)")
     print("5- Troca de Mensagens")
     print("6- Client Port Knocking")
-    print("(Adicional) 7- Reverse Shell")
+    print("7- (Adicional) Reverse Shell")
     print("\n0- Sair\n")
 
 
@@ -178,8 +247,8 @@ def main():
             input("Pressione Enter para continuar...")
 
         elif escolha == "4":
-            print("4- Análise e Processamento de Ficheiros de Log\n")
-            print("Este módulo está em construção. Atualize o código e volte mais tarde, obrigado!\n\n")
+            print("4- Troca de Mensagens (Versão Alternativa Externa)\n")
+            print("Para utilizar essa função, por gentileza execute o script 'TrocaMensagensAlternativo.py' que está na pasta 'src' deste projeto\n")
             input("Pressione Enter para continuar...")
 
         elif escolha == "5":
@@ -208,7 +277,8 @@ def main():
             os.system('clear')
 
         elif escolha == "7":
-            print("7- Reverse Shell\n")
+            print("(Adicional) Reverse Shell\n")
+            print("As instruções e arquivos deste módulo `Reverse Shell`, estão disponíveeis dentro do arquivo `Payload.7z`.\nA chave para descompactar e descriptografar esse arquivo está incluída no relatório desse programa.\n")
             input("Pressione Enter para continuar...")
 
         elif escolha == "0":
