@@ -1,3 +1,5 @@
+# Este código é uma adaptação de NeuralNine | Coding Encrypted Chat in Python - https://www.youtube.com/watch?v=U_Q1vqaJi34&ab_channel=NeuralNine
+
 import socket  # Necessário para operações de rede
 import threading  # Permite execução paralela, essencial para enviar/receber mensagens simultaneamente
 import rsa  # Biblioteca para criptografia RSA
