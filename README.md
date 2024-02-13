@@ -1,7 +1,7 @@
 # LPD-Project
 Welcome to Vtool Script Project!
 
-<img src="/Images/LPD-Project.png" width="1000">
+<img src="/Images/LPD-Project.png" width="800">
 
 
 ## Manual do Usuário para o Programa LPD-Project.py
