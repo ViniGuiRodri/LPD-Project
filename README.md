@@ -1,7 +1,7 @@
 # LPD-Project
-Welcome to Vtool Script Project!
+Bem Vindo ao LPD-Project!
 
-<img src="/Images/LPD-Project.png" width="800">
+<img src="/Images/LPD-Project.png" width="500">
 
 
 ## Manual do Usuário para o Programa LPD-Project.py
@@ -13,13 +13,13 @@ funcionalidade do programa.
 ## Instalação das Bibliotecas Necessárias
 Antes de começar, certifique-se de instalar as seguintes bibliotecas no Kali Linux usando os comandos:
 
-Scapy para manipulação de pacotes:
+## Scapy para manipulação de pacotes:
     pip install scapy
 
-Pycryptodome para criptografia:
+## Pycryptodome para criptografia:
     pip install pycryptodome
 
-Cryptography para funções criptográficas avançadas:
+## Cryptography para funções criptográficas avançadas:
     pip install cryptography
 
 
